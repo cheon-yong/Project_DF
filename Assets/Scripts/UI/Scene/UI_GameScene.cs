@@ -11,9 +11,9 @@ public class UI_GameScene : UI_Scene
 	{
         base.Init();
 
-        ReadyPopup = GetComponentInChildren<UI_ReadyPopup>();
+        //ReadyPopup = Managers.UI.ShowPopupUI<UI_ReadyPopup>();
 
-        ReadyPopup.gameObject.SetActive(false);
+        
 
     }
 
