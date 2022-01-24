@@ -13,8 +13,6 @@ public class UI_GameScene : UI_Scene
 
         //ReadyPopup = Managers.UI.ShowPopupUI<UI_ReadyPopup>();
 
-        
-
     }
 
 }

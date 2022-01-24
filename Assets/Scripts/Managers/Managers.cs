@@ -8,7 +8,7 @@ public class Managers : MonoBehaviour
     public static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
 
     #region Contents
-    
+    MapManager _map = new MapManager();
 	#endregion
 
 	#region Core
@@ -18,6 +18,7 @@ public class Managers : MonoBehaviour
     SoundManager _sound = new SoundManager();
     UIManager _ui = new UIManager();
 
+    public static MapManager Map { get { return Instance._map; } }
     public static PoolManager Pool { get { return Instance._pool; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static SceneManagerEx Scene { get { return Instance._scene; } }
