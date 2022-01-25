@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameScene : BaseScene
 {
     UI_GameScene _sceneUI;
+    [SerializeField]
+    CharacterController character;
 
     Define.GameState _state;
     public Define.GameState State
@@ -17,6 +19,12 @@ public class GameScene : BaseScene
         }
     }
 
+    float speed;
+    public float Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
     protected override void Init()
     {
         base.Init();
@@ -28,7 +36,8 @@ public class GameScene : BaseScene
         _sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
 
         // TODO : Charater and map load
-
+        Managers.Map.CreateMap(1);
+        character = Managers.Resource.Instantiate("Object/Character", this.transform).GetComponent<CharacterController>();
     }
 
     void UpdateState()
@@ -38,10 +47,16 @@ public class GameScene : BaseScene
             case Define.GameState.Ready:
                 break;
             case Define.GameState.Playing:
+                SetSpeed();
                 break;
             case Define.GameState.End:
                 break;
         }
+    }
+
+    private void SetSpeed()
+    {
+        Managers.Map.currentMap.SetSpeed(Speed);
     }
 
     public override void Clear()

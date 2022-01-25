@@ -14,13 +14,16 @@ public class CharacterController : MonoBehaviour
     private Vector3 initPosition;
     private Quaternion initRotation;
     private Vector3 initAngle;
+
+    GameScene scene;
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         initPosition = transform.position;
         initRotation = transform.rotation;
         initAngle = transform.eulerAngles;
-        
+
+        scene = Managers.Scene.CurrentScene as GameScene;
     }
 
     void Update()
@@ -54,10 +57,11 @@ public class CharacterController : MonoBehaviour
             float rad = deg * Mathf.Deg2Rad;
             arrow.transform.localPosition = new Vector2(distance * Mathf.Cos(rad), distance * Mathf.Sin(rad));
             arrow.transform.eulerAngles = new Vector3(0, 0, 0);
-            Debug.Log("UP");
-            Debug.Log(dir);
 
-            rigidBody.velocity = dir * energy;
+            Vector2 speed = dir * energy;
+            rigidBody.velocity = new Vector2(0, speed.y);
+            scene.Speed = speed.x;
+            scene.State = Define.GameState.Playing;
         }
     }
 }

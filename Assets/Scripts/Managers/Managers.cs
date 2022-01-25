@@ -9,6 +9,7 @@ public class Managers : MonoBehaviour
 
     #region Contents
     MapManager _map = new MapManager();
+    ObjectManager _obj = new ObjectManager();
 	#endregion
 
 	#region Core
@@ -19,6 +20,8 @@ public class Managers : MonoBehaviour
     UIManager _ui = new UIManager();
 
     public static MapManager Map { get { return Instance._map; } }
+
+    public static ObjectManager Object { get { return Instance._obj; } }
     public static PoolManager Pool { get { return Instance._pool; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static SceneManagerEx Scene { get { return Instance._scene; } }

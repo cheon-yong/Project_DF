@@ -5,6 +5,7 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     private Renderer quadRenderer;
+    public float Speed { get; set; }
     void Start()
     {
         quadRenderer = GetComponent<Renderer>();
