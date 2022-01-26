@@ -9,6 +9,9 @@ public class MapController : MonoBehaviour
     bool isPlaying = false;
     float speed;
     float cycleTime = 3.0f;
+    int objectCount = 0;
+
+    Dictionary<int, GameObject> objects = new Dictionary<int, GameObject>();
 
     public float Speed
     {
@@ -16,11 +19,11 @@ public class MapController : MonoBehaviour
         set { speed = value; }
     }
 
-    
-
     private void Start()
     {
         //quadRenderer = GetComponent<Renderer>();
+        GameObject go = Managers.Resource.Instantiate("Object/MapObject", this.transform);
+        objects.Add(objectCount, go);
     }
 
     float deltaTime = 0;
@@ -29,12 +32,15 @@ public class MapController : MonoBehaviour
         deltaTime += Time.deltaTime;
         if (isPlaying)
         { 
-            quadRenderer.material.mainTextureOffset = new Vector2(Time.time * 5.0f, 0);
+            quadRenderer.material.mainTextureOffset = new Vector2(Time.time * speed / 10, 0);
+            //quadRenderer.material.mainTextureOffset = Vector2.MoveTowards(quadRenderer.material.mainTextureOffset,
+              //  quadRenderer.material.mainTextureOffset + new Vector2(1, 0), speed * deltaTime);
 
             if (deltaTime > cycleTime)
             {
                 GameObject go = Managers.Resource.Instantiate("Object/MapObject", this.transform);
                 go.GetComponent<MapObject>().SetSpeed(Speed);
+
                 deltaTime = 0;
             }
         }
@@ -44,7 +50,10 @@ public class MapController : MonoBehaviour
     {
         this.speed = speed;
         isPlaying = true;
-
+        foreach(GameObject go in objects.Values)
+        {
+            go.GetComponent<MapObject>().SetSpeed(Speed);
+        }
     }
 
 }

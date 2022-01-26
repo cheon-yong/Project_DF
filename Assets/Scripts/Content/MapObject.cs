@@ -15,11 +15,17 @@ public class MapObject : MonoBehaviour
     public void SetSpeed(float speed)
     {
         this.speed = speed;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
+        //GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, 0);
         
     }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(this);
+    }
+
     private void Update()
     {
-           
+        transform.position = Vector3.MoveTowards(transform.position, new Vector2(-20, -4.5f), speed * Time.deltaTime); 
     }
 }
