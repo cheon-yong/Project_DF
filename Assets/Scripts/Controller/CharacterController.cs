@@ -4,64 +4,137 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    public float deg;
-    public float speed = 3.0f;
+    public float maxAngle;
+    public float minAngle;
+    public float angle;
+    public float arrowSpeed = 3.0f;
+    public float gaugeSpeed = 2.0f;
     public float energy = 5.0f;
-    public GameObject arrow;
     public float distance;
+    public float jump;
 
     private Rigidbody2D rigidBody;
-    private Vector3 initPosition;
-    private Quaternion initRotation;
-    private Vector3 initAngle;
+
+    private int angleDir = 1;
+    private int gaugeDir = 1;
+
+    private float gauge = 0;
+    private float minGauge = 0;
+    private float maxGauge = 100;
+
+
+    GaugeBar gaugeBar;
+    Arrow arrow;
 
     GameScene scene;
+    public bool isPlaying = false;
+    private void AddGaugeBar()
+    {
+        GameObject go = Managers.Resource.Instantiate("UI/GaugeBar", transform);
+        go.transform.localPosition = new Vector3(0, 1.0f, 0);
+        go.name = "GaugeBar";
+        gaugeBar = go.GetComponent<GaugeBar>();
+        gaugeBar.SetGaugeBar(0);
+    }
+
+    private void AddArrow()
+    {
+        GameObject go = Managers.Resource.Instantiate("UI/Arrow", transform);
+        go.transform.localPosition = new Vector3(0, 0.5f, 0);
+        go.name = "Arrow";
+        arrow = go.GetComponent<Arrow>();
+        arrow.SetAngle(angle, distance);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Object"))
+        {
+            rigidBody.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
+        }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            scene.State = Define.GameState.End;
+        }
+    }
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        initPosition = transform.position;
-        initRotation = transform.rotation;
-        initAngle = transform.eulerAngles;
+        AddGaugeBar();
+        AddArrow();
 
         scene = Managers.Scene.CurrentScene as GameScene;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            rigidBody.velocity = Vector2.zero;
-            transform.position = initPosition;
-            transform.rotation = initRotation;
-            transform.eulerAngles = initAngle;
-            rigidBody.angularVelocity = 0;
-
-            deg = 0;
-            float rad = deg * Mathf.Deg2Rad;
-            arrow.transform.localPosition = new Vector2(distance * Mathf.Cos(rad), distance * Mathf.Sin(rad));
-            arrow.transform.eulerAngles = new Vector3(0, 0, 0);
+            scene.State = Define.GameState.Ready;
         }
-        if (Input.GetMouseButton(0))
+            
+        if (!isPlaying)
         {
-            deg = deg + Time.deltaTime * speed;
-            float rad = deg * Mathf.Deg2Rad;
-            arrow.transform.localPosition = new Vector2(distance * Mathf.Cos(rad), distance * Mathf.Sin(rad));
-            arrow.transform.eulerAngles = new Vector3(0, 0, deg);
+            if (Input.GetMouseButton(0))
+            {
+                if (gauge >= maxGauge)
+                {
+                    gauge = maxGauge;
+                    gaugeDir *= -1;
+                }
+
+                if (gauge <= minGauge)
+                {
+                    gauge = minGauge;
+                    gaugeDir *= -1;
+                }
+
+                gauge += gaugeSpeed * gaugeDir * Time.deltaTime;
+                gaugeBar.SetGaugeBar(gauge / maxGauge);
+
+
+                if (angle >= maxAngle)
+                {
+                    angle = maxAngle;
+                    angleDir *= -1;
+                }
+
+                if (angle <= minAngle)
+                {
+                    angle = minAngle;
+                    angleDir *= -1;
+                }
+
+                angle += Time.deltaTime * arrowSpeed * angleDir;
+                arrow.SetAngle(angle, distance);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                Vector2 dir = arrow.LocalPosition - transform.position;
+                Vector2 speed = dir * energy * Mathf.Max(0.01f, gaugeBar.Ratio);
+                //rigidBody.velocity = new Vector2(0, speed.y);
+
+                //jump = speed.y;
+                rigidBody.AddForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
+                gaugeBar.gameObject.SetActive(false);
+                arrow.gameObject.SetActive(false);
+                scene.Speed = speed.x;
+                scene.State = Define.GameState.Playing;
+            }
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            Vector2 dir = arrow.transform.position - transform.position;
-
-            deg = 0;
-            float rad = deg * Mathf.Deg2Rad;
-            arrow.transform.localPosition = new Vector2(distance * Mathf.Cos(rad), distance * Mathf.Sin(rad));
-            arrow.transform.eulerAngles = new Vector3(0, 0, 0);
-
-            Vector2 speed = dir * energy;
-            rigidBody.velocity = new Vector2(0, speed.y);
-            scene.Speed = speed.x;
-            scene.State = Define.GameState.Playing;
+            if (Input.GetMouseButton(0))
+            {
+                rigidBody.gravityScale = 10;
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                rigidBody.gravityScale = 1;
+            }
         }
     }
 }
