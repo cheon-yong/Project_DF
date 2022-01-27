@@ -27,6 +27,7 @@ public class Define
 
     public enum GameState
     {
+        Start,
         Ready,
         Playing,
         End,

@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,15 +11,11 @@ public class UI_ReadyPopup : UI_Popup
         StartButton,
         BgmButton,
         EffectButton,
-        EndButton,
     }
 
-    enum Texts
+    enum Images
     {
-        StartButtonText,
-        BgmButtonText,
-        EffectButtonText,
-        EndButtonText,
+        TitleImage,
     }
 
 
@@ -28,17 +24,18 @@ public class UI_ReadyPopup : UI_Popup
         base.Init();
 
         Bind<Button>(typeof(Buttons));
-        Bind<Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
 
         GetButton((int)Buttons.StartButton).gameObject.BindEvent(OnClickStartButton);
         GetButton((int)Buttons.BgmButton).gameObject.BindEvent(OnClickBgmButton);
         GetButton((int)Buttons.EffectButton).gameObject.BindEvent(OnClickEffectButton);
-        GetButton((int)Buttons.EndButton).gameObject.BindEvent(OnClickEndButton);
     }
 
     void OnClickStartButton(PointerEventData evt)
     {
         Managers.Scene.CurrentScene.Clear();
+        (Managers.Scene.CurrentScene as GameScene).State = Define.GameState.Ready;
+        ClosePopupUI();
     }
 
     void OnClickBgmButton(PointerEventData evt)
@@ -49,11 +46,6 @@ public class UI_ReadyPopup : UI_Popup
     void OnClickEffectButton(PointerEventData evt)
     {
         //Managers.Sound.Mute(Define.Sound.Bgm);
-    }
-
-    void OnClickEndButton(PointerEventData evt)
-    {
-        Application.Quit();
     }
 
 }

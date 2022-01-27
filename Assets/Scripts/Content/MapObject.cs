@@ -12,10 +12,14 @@ public class MapObject : MonoBehaviour
 
     }
 
+    private void OnBecameInvisible()
+    {
+        Destroy(this.gameObject);
+    }
+
     public void SetSpeed(float speed)
     {
         this.speed = speed;
-        
     }
 
     private void Update()

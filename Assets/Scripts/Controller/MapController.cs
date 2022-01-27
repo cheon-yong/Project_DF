@@ -24,7 +24,7 @@ public class MapController : MonoBehaviour
     private void Start()
     {
         firstObject = Managers.Resource.Instantiate("Object/MapObject", this.transform);
-        firstObject.transform.localPosition = new Vector3(-9.5f, -3f, -1f);
+        firstObject.transform.localPosition = new Vector3(-7.5f, -3f, -1f);
     }
 
     float deltaTime = 0;
@@ -55,7 +55,8 @@ public class MapController : MonoBehaviour
     public void SetSpeed(float speed)
     {
         this.speed = speed;
-        firstObject.GetComponent<MapObject>().SetSpeed(speed);
+        if (firstObject != null)
+            firstObject.GetComponent<MapObject>().SetSpeed(speed);
     }
 
 }

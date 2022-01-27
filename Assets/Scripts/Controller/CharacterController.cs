@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CharacterController : MonoBehaviour
 {
@@ -21,7 +22,6 @@ public class CharacterController : MonoBehaviour
     private float gauge = 0;
     private float minGauge = 0;
     private float maxGauge = 100;
-
 
     GaugeBar gaugeBar;
     Arrow arrow;
@@ -53,7 +53,7 @@ public class CharacterController : MonoBehaviour
             rigidBody.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
         }
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        if (isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
             scene.State = Define.GameState.End;
         }
@@ -77,7 +77,7 @@ public class CharacterController : MonoBehaviour
             
         if (!isPlaying)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (gauge >= maxGauge)
                 {
@@ -111,7 +111,7 @@ public class CharacterController : MonoBehaviour
                 arrow.SetAngle(angle, distance);
             }
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 Vector2 dir = arrow.LocalPosition - transform.position;
                 Vector2 speed = dir * energy * Mathf.Max(0.01f, gaugeBar.Ratio);
@@ -127,11 +127,11 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 rigidBody.gravityScale = 10;
             }
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 rigidBody.gravityScale = 1;
             }

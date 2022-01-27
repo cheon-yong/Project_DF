@@ -35,14 +35,29 @@ public class GameScene : BaseScene
 
         _sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
 
-        ReadyGame();
+        State = Define.GameState.Start;
+    }
+
+    void StartGame()
+    {
+        Clear();
+        _sceneUI.OnOffUI(false);
+        Managers.UI.CloseAllPopupUI();
+        _sceneUI.ShowReadyPopup();
     }
 
     void ReadyGame()
     {
         Clear();
+        _sceneUI.OnOffUI(true);
         Managers.Map.CreateMap(1);
         character = Managers.Resource.Instantiate("Object/Character", this.transform).GetComponent<CharacterController>();
+    }
+
+    void EndGame()
+    {
+        _sceneUI.OnOffUI(false);
+        _sceneUI.ShowEndPopup();
     }
     
 
@@ -50,6 +65,9 @@ public class GameScene : BaseScene
     {
         switch(_state)
         {
+            case Define.GameState.Start:
+                StartGame();
+                break;
             case Define.GameState.Ready:
                 ReadyGame();
                 break;
@@ -60,6 +78,7 @@ public class GameScene : BaseScene
             case Define.GameState.End:
                 SetSpeed(0);
                 SetPlaying(false);
+                EndGame();
                 break;
         }
     }
