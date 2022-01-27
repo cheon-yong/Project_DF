@@ -6,13 +6,15 @@ public class MapController : MonoBehaviour
 {
     [SerializeField]
     Renderer quadRenderer;
-    bool isPlaying = false;
+    public bool isPlaying = false;
     float speed;
-    float cycleTime = 3.0f;
-    int objectCount = 0;
+
+    public float percentage = 60.0f;
+    public float cycleTime = 0.1f;
+    GameObject firstObject;
 
     Dictionary<int, GameObject> objects = new Dictionary<int, GameObject>();
-
+    
     public float Speed
     {
         get { return speed; }
@@ -21,9 +23,8 @@ public class MapController : MonoBehaviour
 
     private void Start()
     {
-        //quadRenderer = GetComponent<Renderer>();
-        GameObject go = Managers.Resource.Instantiate("Object/MapObject", this.transform);
-        objects.Add(objectCount, go);
+        firstObject = Managers.Resource.Instantiate("Object/MapObject", this.transform);
+        firstObject.transform.localPosition = new Vector3(-9.5f, -3f, -1f);
     }
 
     float deltaTime = 0;
@@ -33,27 +34,28 @@ public class MapController : MonoBehaviour
         if (isPlaying)
         { 
             quadRenderer.material.mainTextureOffset = new Vector2(Time.time * speed / 10, 0);
-            //quadRenderer.material.mainTextureOffset = Vector2.MoveTowards(quadRenderer.material.mainTextureOffset,
-              //  quadRenderer.material.mainTextureOffset + new Vector2(1, 0), speed * deltaTime);
-
             if (deltaTime > cycleTime)
             {
-                GameObject go = Managers.Resource.Instantiate("Object/MapObject", this.transform);
-                go.GetComponent<MapObject>().SetSpeed(Speed);
-
+                CreateObject();
                 deltaTime = 0;
             }
+        }
+    }
+
+    private void CreateObject()
+    {
+        if (Random.Range(0, 100) > percentage)
+        {
+            GameObject go = Managers.Resource.Instantiate("Object/MapObject", this.transform);
+            go.transform.localPosition = new Vector3(20.5f, -3f, -1f);
+            go.GetComponent<MapObject>().SetSpeed(Speed + Random.Range(0, Speed));
         }
     }
 
     public void SetSpeed(float speed)
     {
         this.speed = speed;
-        isPlaying = true;
-        foreach(GameObject go in objects.Values)
-        {
-            go.GetComponent<MapObject>().SetSpeed(Speed);
-        }
+        firstObject.GetComponent<MapObject>().SetSpeed(speed);
     }
 
 }

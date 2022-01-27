@@ -32,4 +32,13 @@ public class MapManager
 
         maps.Remove(mapId);
     }
+    public void Clear()
+    {
+        foreach (MapController map in maps.Values)
+        {
+            Managers.Resource.Destroy(map.gameObject);
+        }
+        maps.Clear();
+        currentMap = null;
+    }
 }

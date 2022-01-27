@@ -35,23 +35,39 @@ public class GameScene : BaseScene
 
         _sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
 
-        // TODO : Charater and map load
+        ReadyGame();
+    }
+
+    void ReadyGame()
+    {
+        Clear();
         Managers.Map.CreateMap(1);
         character = Managers.Resource.Instantiate("Object/Character", this.transform).GetComponent<CharacterController>();
     }
+    
 
     void UpdateState()
     {
         switch(_state)
         {
             case Define.GameState.Ready:
+                ReadyGame();
                 break;
             case Define.GameState.Playing:
                 SetSpeed();
+                SetPlaying(true);
                 break;
             case Define.GameState.End:
+                SetSpeed(0);
+                SetPlaying(false);
                 break;
         }
+    }
+
+    private void SetSpeed(float speed)
+    {
+        this.speed = speed;
+        SetSpeed();
     }
 
     private void SetSpeed()
@@ -59,8 +75,16 @@ public class GameScene : BaseScene
         Managers.Map.currentMap.SetSpeed(Speed);
     }
 
+    private void SetPlaying(bool isPlaying)
+    {
+        Managers.Map.currentMap.isPlaying = isPlaying;
+        character.isPlaying = isPlaying;
+    }
+
     public override void Clear()
     {
-        
+        Managers.Map.Clear();
+        if (character != null)
+            Managers.Resource.Destroy(character.gameObject);
     }
 }
