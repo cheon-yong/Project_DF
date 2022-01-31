@@ -129,7 +129,7 @@ public class CharacterController : MonoBehaviour
         {
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                rigidBody.gravityScale = 10;
+                rigidBody.gravityScale = 30;
             }
             if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
             {
