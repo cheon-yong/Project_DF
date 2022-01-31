@@ -168,10 +168,10 @@ MonoBehaviour:
   maxAngle: 70
   minAngle: 30
   angle: 30
-  arrowSpeed: 25
+  arrowSpeed: 30
   gaugeSpeed: 70
   energy: 5
-  distance: 3
+  distance: 2
   jump: 10
   isPlaying: 0
 --- !u!1001 &7490378358352668508
