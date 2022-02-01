@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine;
+using Spine.Unity;
 
 public class MapObject : MonoBehaviour
 {
@@ -12,7 +14,15 @@ public class MapObject : MonoBehaviour
 
     }
 
-    private void OnBecameInvisible()
+    private void OnCollisionEnter2D(Collision2D collision)
+    { 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Character"))
+        {
+            GetComponent<SkeletonAnimation>().AnimationState.SetAnimation(0, "animation", false);
+        }
+    }
+
+        private void OnBecameInvisible()
     {
         Managers.Object.RemoveObject(id);
     }

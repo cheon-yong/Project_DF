@@ -9,14 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2181165439563734765}
-  - component: {fileID: 2181165439563734767}
   - component: {fileID: 2181165439563734737}
   - component: {fileID: 4851436306452440467}
   - component: {fileID: 7002458390540275354}
   - component: {fileID: 3225586404012407753}
   - component: {fileID: 567317012542426440}
   - component: {fileID: 2305424539496960034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,25 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2181165439563734767
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2181165439563734764}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &2181165439563734737
 Rigidbody2D:
   serializedVersion: 4
@@ -225,6 +205,10 @@ PrefabInstance:
     - target: {fileID: 8770238038307306637, guid: 8474554ec2db05a45a14db08ab39e7b8, type: 3}
       propertyPath: m_Name
       value: Arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770238038307306637, guid: 8474554ec2db05a45a14db08ab39e7b8, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8770238038307306637, guid: 8474554ec2db05a45a14db08ab39e7b8, type: 3}
       propertyPath: m_IsActive
