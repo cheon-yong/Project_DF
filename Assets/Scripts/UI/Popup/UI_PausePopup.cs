@@ -8,7 +8,7 @@ public class UI_PausePopup : UI_Popup
 {
     enum Buttons
     {
-        RestartButton,
+        ContinueButton,
         RetryButton,
         HomeButton,
     }
@@ -26,12 +26,12 @@ public class UI_PausePopup : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
 
-        GetButton((int)Buttons.RestartButton).gameObject.BindEvent(OnClickRestartButton);
+        GetButton((int)Buttons.ContinueButton).gameObject.BindEvent(OnClickContinueButton);
         GetButton((int)Buttons.RetryButton).gameObject.BindEvent(OnClickRetryButton);
         GetButton((int)Buttons.HomeButton).gameObject.BindEvent(OnClickHomeButton);
     }
 
-    void OnClickRestartButton(PointerEventData evt)
+    void OnClickContinueButton(PointerEventData evt)
     {
         //Managers.Scene.CurrentScene.Clear();
         Close();

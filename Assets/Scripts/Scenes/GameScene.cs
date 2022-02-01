@@ -38,6 +38,23 @@ public class GameScene : BaseScene
         }
     }
 
+    public float BgmFitch
+    {
+        get { return PlayerPrefs.GetFloat("bgm", 1.0f); }
+        set 
+        { 
+            PlayerPrefs.SetFloat("bgm", value);
+            Managers.Sound.Clear();
+            Managers.Sound.Play("bgm", Define.Sound.Bgm, value);
+        }
+    }
+    public float EffectFitch
+    {
+        get { return PlayerPrefs.GetFloat("effect", 1.0f); }
+        set { PlayerPrefs.SetFloat("effect", value); }
+    }
+
+
     protected override void Init()
     {
         base.Init();
@@ -47,6 +64,8 @@ public class GameScene : BaseScene
         Screen.SetResolution(640, 480, false);
 
         _sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
+
+        Managers.Sound.Play("bgm", Define.Sound.Bgm, BgmFitch);
 
         State = Define.GameState.Start;
     }

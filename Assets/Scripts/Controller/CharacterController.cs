@@ -56,12 +56,13 @@ public class CharacterController : MonoBehaviour
             rigidBody.gravityScale = defaultScale;
             rigidBody.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
             isJumping = true;
-            //Managers.Sound
+            Managers.Sound.Play("sfx_boing", Define.Sound.Effect, scene.EffectFitch);
         }
 
         if (isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
             scene.State = Define.GameState.End;
+            Managers.Sound.Play("sfx_dead", Define.Sound.Effect, scene.EffectFitch);
         }
     }
 
