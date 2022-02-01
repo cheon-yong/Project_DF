@@ -8,12 +8,13 @@ public class MapController : MonoBehaviour
     Renderer quadRenderer;
     public bool isPlaying = false;
     float speed;
+    int distance;
 
     public float percentage = 60.0f;
     public float cycleTime = 0.1f;
+    GameScene gameScene;
     GameObject firstObject;
 
-    Dictionary<int, GameObject> objects = new Dictionary<int, GameObject>();
     
     public float Speed
     {
@@ -25,6 +26,11 @@ public class MapController : MonoBehaviour
     {
         firstObject = Managers.Resource.Instantiate("Object/MapObject", this.transform);
         firstObject.transform.localPosition = new Vector3(-7.5f, -3f, -1f);
+        if (gameScene == null)
+        {
+            gameScene = Managers.Scene.CurrentScene as GameScene;
+        }
+        gameScene.Score = 0;
     }
 
     float deltaTime = 0;
@@ -32,8 +38,10 @@ public class MapController : MonoBehaviour
     {
         deltaTime += Time.deltaTime;
         if (isPlaying)
-        { 
-            quadRenderer.material.mainTextureOffset = new Vector2(Time.time * speed / 10, 0);
+        {
+            float score = Time.time * speed / 10;
+            gameScene.Score += score / 100;
+            quadRenderer.material.mainTextureOffset = new Vector2(score, 0);
             if (deltaTime > cycleTime)
             {
                 CreateObject();

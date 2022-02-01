@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 6937236080753282798}
   - component: {fileID: 4214358999164158746}
   m_Layer: 0
-  m_Name: DistanceText
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -619,7 +619,7 @@ GameObject:
   - component: {fileID: 417847824698783061}
   - component: {fileID: 2431781903415810717}
   m_Layer: 0
-  m_Name: ScoreText
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

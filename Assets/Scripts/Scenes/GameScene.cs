@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,18 @@ public class GameScene : BaseScene
         get { return speed; }
         set { speed = value; }
     }
+
+    float score;
+    public float Score
+    {
+        get { return score; }
+        set 
+        { 
+            score = value;
+            _sceneUI.SetScoreText(score);
+        }
+    }
+
     protected override void Init()
     {
         base.Init();
@@ -50,14 +63,17 @@ public class GameScene : BaseScene
     {
         Clear();
         _sceneUI.OnOffUI(true);
+        _sceneUI.SetBestScore();
         Managers.Map.CreateMap(1);
         character = Managers.Resource.Instantiate("Object/Character", this.transform).GetComponent<CharacterController>();
     }
 
     void EndGame()
     {
+        int bestScore = PlayerPrefs.GetInt("bestScore", 0);
+        PlayerPrefs.SetInt("bestScore", Math.Max(bestScore, (int)score));
         _sceneUI.OnOffUI(false);
-        _sceneUI.ShowEndPopup();
+        _sceneUI.ShowEndPopup((int)score);
     }
     
 

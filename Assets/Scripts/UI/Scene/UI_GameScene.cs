@@ -48,6 +48,22 @@ public class UI_GameScene : UI_Scene
         }
     }
 
+    public void SetBestScore()
+    {
+        GetText((int)Texts.BestText).text = PlayerPrefs.GetInt("bestScore", 0).ToString() + "M";
+    }
+
+    public void SetScoreText(float score)
+    {
+        GetText((int)Texts.ScoreText).text = ((int)score).ToString() + "M";
+    }
+
+    public void ShowEndPopup(int score)
+    {
+        ShowEndPopup();
+        EndPopup.SetScoreText(score);
+    }
+
     public void ShowEndPopup()
     {
         EndPopup = Managers.UI.ShowPopupUI<UI_EndPopup>();

@@ -13,6 +13,8 @@ public class CharacterController : MonoBehaviour
     public float energy = 5.0f;
     public float distance;
     public float jump;
+    public int defaultScale = 1;
+    public int gravityScale = 30;
 
     private Rigidbody2D rigidBody;
 
@@ -28,6 +30,7 @@ public class CharacterController : MonoBehaviour
 
     GameScene scene;
     public bool isPlaying = false;
+    public bool isJumping = false;
     private void AddGaugeBar()
     {
         GameObject go = Managers.Resource.Instantiate("UI/GaugeBar", transform);
@@ -48,9 +51,12 @@ public class CharacterController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Object"))
+        if (!isJumping && isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Object"))
         {
+            rigidBody.gravityScale = defaultScale;
             rigidBody.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
+            isJumping = true;
+            //Managers.Sound
         }
 
         if (isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Water"))
@@ -65,6 +71,7 @@ public class CharacterController : MonoBehaviour
         AddGaugeBar();
         AddArrow();
 
+        rigidBody.gravityScale = defaultScale;
         scene = Managers.Scene.CurrentScene as GameScene;
     }
 
@@ -73,6 +80,11 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
             scene.State = Define.GameState.Ready;
+        }
+
+        if (rigidBody.velocity.y < 0)
+        {
+            isJumping = false;
         }
             
         if (!isPlaying)
@@ -129,11 +141,7 @@ public class CharacterController : MonoBehaviour
         {
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                rigidBody.gravityScale = 30;
-            }
-            if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                rigidBody.gravityScale = 1;
+                rigidBody.gravityScale = gravityScale;
             }
         }
     }

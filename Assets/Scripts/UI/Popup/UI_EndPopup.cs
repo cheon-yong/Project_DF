@@ -10,7 +10,6 @@ public class UI_EndPopup : UI_Popup
     {
         GameOverText,
         ScoreText,
-        DistanceText,
     }
 
 
@@ -30,6 +29,11 @@ public class UI_EndPopup : UI_Popup
 
         GetButton((int)Buttons.RetryButton).gameObject.BindEvent(OnClickRetryButton);
         GetButton((int)Buttons.HomeButton).gameObject.BindEvent(OnClickHomeButton);
+    }
+
+    public void SetScoreText(int score)
+    {
+        GetText((int)Texts.ScoreText).text = score.ToString() + "M";
     }
 
     void OnClickRetryButton(PointerEventData evt)
