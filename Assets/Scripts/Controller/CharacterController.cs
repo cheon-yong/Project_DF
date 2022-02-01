@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using Spine;
+using Spine.Unity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,6 +31,8 @@ public class CharacterController : MonoBehaviour
     GameScene scene;
     public bool isPlaying = false;
     public bool isJumping = false;
+    SkeletonAnimation skeletonAnimation;
+
     private void AddGaugeBar()
     {
         GameObject go = Managers.Resource.Instantiate("UI/GaugeBar", transform);
@@ -57,6 +59,8 @@ public class CharacterController : MonoBehaviour
             rigidBody.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
             isJumping = true;
             Managers.Sound.Play("sfx_boing", Define.Sound.Effect, scene.EffectFitch);
+            skeletonAnimation.AnimationState.SetAnimation(0, "randing", false);
+            skeletonAnimation.AnimationState.AddAnimation(0, "jump", false, 0.167f);
         }
 
         if (isPlaying && collision.gameObject.layer == LayerMask.NameToLayer("Water"))
@@ -66,12 +70,22 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    private void OnBecameInvisible()
+    {
+        scene.IsOverScreen = true;
+    }
+
+    private void OnBecameVisible()
+    {
+        scene.IsOverScreen = false;
+    }
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         AddGaugeBar();
         AddArrow();
-
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
         rigidBody.gravityScale = defaultScale;
         scene = Managers.Scene.CurrentScene as GameScene;
     }
@@ -136,6 +150,7 @@ public class CharacterController : MonoBehaviour
                 arrow.gameObject.SetActive(false);
                 scene.Speed = speed.x;
                 scene.State = Define.GameState.Playing;
+                skeletonAnimation.AnimationState.SetAnimation(0, "jump", false);
             }
         }
         else

@@ -35,7 +35,6 @@ public class UI_ReadyPopup : UI_Popup
 
     void OnClickStartButton(PointerEventData evt)
     {
-        Managers.Scene.CurrentScene.Clear();
         (Managers.Scene.CurrentScene as GameScene).State = Define.GameState.Ready;
         ClosePopupUI();
     }

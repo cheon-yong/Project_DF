@@ -17,11 +17,17 @@ public class UI_GameScene : UI_Scene
         ScoreText,
         Best,
         BestText,
+        HeightText,
     }
 
     enum Buttons
     {
         PauseButton,
+    }
+
+    enum Images
+    {
+        Triangle,
     }
 
     public override void Init()
@@ -30,8 +36,10 @@ public class UI_GameScene : UI_Scene
 
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
 
         GetButton((int)Buttons.PauseButton).gameObject.BindEvent(OnClickPauseButton);
+
 
         //ReadyPopup = Managers.UI.ShowPopupUI<UI_ReadyPopup>();
         //EndPopup = Managers.UI.ShowPopupUI<UI_EndPopup>();
@@ -62,6 +70,16 @@ public class UI_GameScene : UI_Scene
     {
         ShowEndPopup();
         EndPopup.SetScoreText(score);
+    }
+
+    public void ShowTriangle(bool isOn)
+    {
+        GetImage((int)Images.Triangle).gameObject.SetActive(isOn);
+    }
+
+    public void SetHeightText(int height)
+    {
+        GetText((int)Texts.HeightText).text = height.ToString() + "M";
     }
 
     public void ShowEndPopup()

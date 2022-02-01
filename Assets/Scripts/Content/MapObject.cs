@@ -14,7 +14,7 @@ public class MapObject : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        Destroy(this.gameObject);
+        Managers.Object.RemoveObject(id);
     }
 
     public void SetSpeed(float speed)

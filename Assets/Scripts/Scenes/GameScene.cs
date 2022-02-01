@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class GameScene : BaseScene
 {
+    public float percentage = 60.0f;
+    public float cycleTime = 0.1f;
+
     UI_GameScene _sceneUI;
-    [SerializeField]
+
+    GameObject triangle;
     CharacterController character;
 
     Define.GameState _state;
@@ -38,6 +42,17 @@ public class GameScene : BaseScene
         }
     }
 
+    bool isOverScreen = false;
+    public bool IsOverScreen
+    {
+        get { return isOverScreen; }
+        set
+        {
+            isOverScreen = value;
+            _sceneUI.ShowTriangle(value);
+        }
+    }
+
     public float BgmFitch
     {
         get { return PlayerPrefs.GetFloat("bgm", 1.0f); }
@@ -52,6 +67,23 @@ public class GameScene : BaseScene
     {
         get { return PlayerPrefs.GetFloat("effect", 1.0f); }
         set { PlayerPrefs.SetFloat("effect", value); }
+    }
+
+    float deltaTime = 0;
+    private void Update()
+    {
+        if (State != Define.GameState.Playing)
+            return;
+
+        if (IsOverScreen)
+            _sceneUI.SetHeightText((int)character.transform.position.y);
+
+        deltaTime += Time.deltaTime;
+        if (deltaTime > cycleTime)
+        {
+            Managers.Object.CreateObject(percentage);
+            deltaTime = 0;
+        }
     }
 
 
@@ -75,15 +107,19 @@ public class GameScene : BaseScene
         Clear();
         _sceneUI.OnOffUI(false);
         Managers.UI.CloseAllPopupUI();
+        Managers.Map.CreateMap(1);
         _sceneUI.ShowReadyPopup();
     }
 
     void ReadyGame()
     {
-        Clear();
         _sceneUI.OnOffUI(true);
         _sceneUI.SetBestScore();
-        Managers.Map.CreateMap(1);
+        Managers.Map.currentMap.Refresh();
+        Managers.Object.Clear();
+        Managers.Object.CreateObject(new Vector3(-7.5f, -3f, -1f));
+        if (character != null)
+            Managers.Resource.Destroy(character.gameObject);
         character = Managers.Resource.Instantiate("Object/Character", this.transform).GetComponent<CharacterController>();
     }
 
@@ -127,6 +163,7 @@ public class GameScene : BaseScene
     private void SetSpeed()
     {
         Managers.Map.currentMap.SetSpeed(Speed);
+        Managers.Object.Speed = Speed;
     }
 
     private void SetPlaying(bool isPlaying)
@@ -135,9 +172,15 @@ public class GameScene : BaseScene
         character.isPlaying = isPlaying;
     }
 
+    public void ShowTriangle()
+    {
+
+    }
+
     public override void Clear()
     {
         Managers.Map.Clear();
+        Managers.Object.Clear();
         if (character != null)
             Managers.Resource.Destroy(character.gameObject);
     }
