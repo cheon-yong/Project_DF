@@ -11,7 +11,6 @@ public class MapObject : MonoBehaviour
 
     private void Start()
     {
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -22,11 +21,6 @@ public class MapObject : MonoBehaviour
         }
     }
 
-        private void OnBecameInvisible()
-    {
-        Managers.Object.RemoveObject(id);
-    }
-
     public void SetSpeed(float speed)
     {
         this.speed = speed;
@@ -34,6 +28,8 @@ public class MapObject : MonoBehaviour
 
     private void Update()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector2(-20, -4.5f), speed * Time.deltaTime); 
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector2(-20.0f, -4.5f), speed * Time.deltaTime);
+        if (transform.localPosition.x == -20.0f)
+            Managers.Object.RemoveObject(id);
     }
 }

@@ -93,7 +93,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
-        Screen.SetResolution(640, 480, false);
+        //Screen.SetResolution(640, 480, false);
 
         _sceneUI = Managers.UI.ShowSceneUI<UI_GameScene>();
 
@@ -115,12 +115,14 @@ public class GameScene : BaseScene
     {
         _sceneUI.OnOffUI(true);
         _sceneUI.SetBestScore();
+        Score = 0;
         Managers.Map.currentMap.Refresh();
         Managers.Object.Clear();
         Managers.Object.CreateObject(new Vector3(-7.5f, -3f, -1f));
         if (character != null)
             Managers.Resource.Destroy(character.gameObject);
         character = Managers.Resource.Instantiate("Object/Character", this.transform).GetComponent<CharacterController>();
+        character.transform.localPosition = new Vector3(-7.5f, -3f);
     }
 
     void EndGame()

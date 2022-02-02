@@ -10,8 +10,6 @@ public class MapController : MonoBehaviour
     float speed;
 
     GameScene gameScene;
-    GameObject firstObject;
-
     
     public float Speed
     {
@@ -21,10 +19,8 @@ public class MapController : MonoBehaviour
 
     public void Refresh()
     {
-        if (firstObject != null)
-            Destroy(firstObject.gameObject);
-        quadRenderer.material.mainTextureOffset = new Vector2(0, 0);
         Speed = 0;
+        quadRenderer.material.mainTextureOffset = new Vector2(0, 0);
     }
 
 
@@ -41,7 +37,7 @@ public class MapController : MonoBehaviour
     {
         if (isPlaying)
         {
-            float score = Time.time * speed / 10;
+            float score = Time.time * speed / 10 * Time.timeScale;
             gameScene.Score += score / 100;
             quadRenderer.material.mainTextureOffset = new Vector2(score, 0);
         }
@@ -50,8 +46,6 @@ public class MapController : MonoBehaviour
     public void SetSpeed(float speed)
     {
         this.speed = speed;
-        if (firstObject != null)
-            firstObject.GetComponent<MapObject>().SetSpeed(speed);
     }
 
 }
